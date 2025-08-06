@@ -5,9 +5,7 @@ export class Actions {
     readonly browseSweetsButton;
     readonly navigateToBasketButton;
     readonly basket;
-    readonly basketItems;
     readonly itemPick;
-    readonly name1
     constructor(page: Page) {
         this.page = page;
         this.navigateToBasketButton = this.page.getByRole('link', { name: 'Basket' });
@@ -16,9 +14,11 @@ export class Actions {
 
 
     }
-    async addItem(itemName: string) {
+    async addItemsToBag(itemName: string, clicks: number) {
         let item = this.itemPick(itemName);
-        await item.click();
+        for (let i = 0; i < clicks; i++) {
+            await item.click();
+        }
     }
     async navigateToBasket() {
         await expect(this.navigateToBasketButton).toBeAttached();
