@@ -16,7 +16,8 @@ test.describe('User should be able to add an item to the basket', () => {
     });
     test('Add one item to the basket', async () => {
         await actions.addItemsToBag('Strawberry Bon Bons', 1);
+        await actions.numberOfItemsInBasket('1');
         await actions.navigateToBasket();
-        await actions.verifyItemsInBasket('Bon Bons')
+        await actions.verifyItemsInBasket('Bon Bons');
     });
 });
