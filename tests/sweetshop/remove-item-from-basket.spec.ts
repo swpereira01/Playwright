@@ -17,7 +17,7 @@ test.describe('User should be able to add an item to the basket', () => {
         await actions.addItemsToBag('Swansea Mixture', 1);
         await basket.goto();
     });
-    test.skip('Should open the Basket page', async () => {
+    test('Should open the Basket page', async () => {
         await basket.verifyUrl();
         await basket.verifyHeader();
     });
