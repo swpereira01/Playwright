@@ -2,7 +2,7 @@ import { test } from '@playwright/test';
 import { Browse } from '../../page-objects/sweetshop/Browse';
 import { Actions } from '../../page-objects/sweetshop/Actions';
 
-test.describe('User should be able to add an item to the basket', () => {
+test.describe.serial('User should be able to add an item to the basket', () => {
     let browse;
     let actions;
     test.beforeEach(async ({ page }) => {
