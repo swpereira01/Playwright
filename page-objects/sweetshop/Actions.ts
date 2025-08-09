@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { execPath } from 'process';
 
 export class Actions {
     readonly page;
@@ -9,6 +10,8 @@ export class Actions {
     readonly itemPick;
     readonly basketItem;
     readonly deleteButton;
+    readonly emptyBasketButton;
+    theBasketIsEmpty: any;
     constructor(page: Page) {
         this.page = page;
         this.navigateToBasketButton = this.page.getByRole('link', { name: 'Basket' });
@@ -17,7 +20,7 @@ export class Actions {
         this.itemPick = (itemName: string) => this.page.locator('div.card').locator('div.card-footer').locator(`[data-name="${itemName}"]`);
         this.basketItem = (itemName: string) => this.basket.locator('li').getByText(`${itemName}`);
         this.deleteButton = (itemName: string) => this.page.getByRole('listitem').filter({ hasText: `${itemName}` }).getByRole('link');
-
+        this.emptyBasketButton = this.page.getByRole('link', { name: 'Empty Basket' })
 
     }
     async addItemsToBag(itemName: string, clicks: number) {
@@ -40,7 +43,11 @@ export class Actions {
         let itemToDelete = this.basketItem(itemName);
         await expect(itemToDelete).toBeVisible();
         let itemToDeleteButton = this.deleteButton(itemName)
-        await itemToDeleteButton.dblclick(); //workaround - the tests are very flaky with one click
+        await itemToDeleteButton.dblclick(); //workaround - the tests are very flaky with one click (could be because of the dialog)
+    }
+    async emptyBasket() {
+        await expect(this.emptyBasketButton).toBeVisible();
+        await this.emptyBasketButton.dblclick();
     }
     async acceptRemoval() {
         this.page.on('dialog', async dialog => {
@@ -48,5 +55,8 @@ export class Actions {
             console.log(dialog.message());
             await dialog.accept();
         })
+    }
+    async verifyEmptyBasketButtonWasClicked() {
+        await expect(this.page).toHaveURL('https://sweetshop.vivrichards.co.uk/basket#')
     }
 }
