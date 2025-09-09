@@ -1,5 +1,4 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { execPath } from 'process';
 
 export class Actions {
     readonly page;
@@ -11,7 +10,6 @@ export class Actions {
     readonly basketItem;
     readonly deleteButton;
     readonly emptyBasketButton;
-    theBasketIsEmpty: any;
     constructor(page: Page) {
         this.page = page;
         this.navigateToBasketButton = this.page.getByRole('link', { name: 'Basket' });
