@@ -17,9 +17,9 @@ test.describe('GreenKart Checkout Flow', () => {
     test('User will search for a product, add it to cart and checkout', async () => {
         await catalog.addProductToCart('Cucumber');
         await checkout.openCart();
-        await checkout.validateCartItems('Cucumber');
+        await checkout.validateCartItems(['Cucumber']);
         await checkout.proceedToCheckout();
-        await checkout.validateOrderTable('Cucumber');
+        await checkout.validateOrderTable(1, 'Cucumber', '1');
         await checkout.validateTotalAmount('48');
         await checkout.clickPlaceOrder();
         await checkout.selectCountry('India');
