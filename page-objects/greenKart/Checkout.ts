@@ -32,16 +32,21 @@ export class Checkout extends Homepage {
     async openCart() {
         await this.cartButton.click();
     }
-    async validateCartItems(expectedItem: string) {
-        let expectedItems = this.cartItems.filter({ hasText: expectedItem });
-        await expect(expectedItems).toBeVisible();
+    async validateCartItems(expectedItems: string[]) {
+        for (const item of expectedItems) {
+            const cartItem = this.cartItems.filter({ hasText: item });
+            await expect(cartItem).toBeVisible();
+        }
     }
     async proceedToCheckout() {
         await this.proceedToCheckoutButton.click();
     }
-    async validateOrderTable(expectedItem: string) {
-        const expectedItems = this.orderTable.filter({ hasText: expectedItem });
+    async validateOrderTable(row: number, expectedItem: string, expectedQuantity: string) {
+        const orderRow = this.orderTable.locator('tr').nth(row);
+        const expectedItems = orderRow.locator('td').nth(1).filter({ hasText: expectedItem });
+        const expectedQuantities = orderRow.locator('td').nth(2).filter({ hasText: expectedQuantity });
         await expect(expectedItems).toBeVisible();
+        await expect(expectedQuantities).toBeVisible();
     }
     async validateTotalAmount(expectedAmount: string) {
         await expect(this.totalAmount).toHaveText(expectedAmount);
