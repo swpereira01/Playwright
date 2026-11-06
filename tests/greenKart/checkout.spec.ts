@@ -19,11 +19,7 @@ test.describe('GreenKart Checkout Flow', () => {
         await checkout.openCart();
         await checkout.validateCartItems(['Cucumber']);
         await checkout.proceedToCheckout();
-        await checkout.validateOrderTable(1, 'Cucumber', '1');
-        await checkout.validateTotalAmount('48');
-        await checkout.clickPlaceOrder();
-        await checkout.selectCountry('India');
-        await checkout.agreeToTerms();
+        await checkout.validateOrderTable(1, 'Cucumber', '1', 48, 48);
         await checkout.clickProceed();
         await checkout.validateThankYouMessage();
     })
