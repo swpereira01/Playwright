@@ -41,12 +41,16 @@ export class Checkout extends Homepage {
     async proceedToCheckout() {
         await this.proceedToCheckoutButton.click();
     }
-    async validateOrderTable(row: number, expectedItem: string, expectedQuantity: string) {
+    async validateOrderTable(row: number, expectedItem: string, expectedQuantity: string, expectedPrice: number, expectedTotal: number) {
         const orderRow = this.orderTable.locator('tr').nth(row);
         const expectedItems = orderRow.locator('td').nth(1).filter({ hasText: expectedItem });
         const expectedQuantities = orderRow.locator('td').nth(2).filter({ hasText: expectedQuantity });
+        const expectedPrices = orderRow.locator('td').nth(3).filter({ hasText: expectedPrice.toString() });
+        const expectedTotals = orderRow.locator('td').nth(4).filter({ hasText: expectedTotal.toString() });
         await expect(expectedItems).toBeVisible();
         await expect(expectedQuantities).toBeVisible();
+        await expect(expectedPrices).toBeVisible();
+        await expect(expectedTotals).toBeVisible();
     }
     async validateTotalAmount(expectedAmount: string) {
         await expect(this.totalAmount).toHaveText(expectedAmount);

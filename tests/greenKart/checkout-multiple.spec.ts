@@ -21,15 +21,34 @@ test.describe('GreenKart Checkout Flow', () => {
         await checkout.openCart();
         await checkout.validateCartItems(['Cucumber', 'Carrot', 'Beetroot']);
         await checkout.proceedToCheckout();
-        await checkout.validateOrderTable(1, 'Cucumber', '1');
-        await checkout.validateOrderTable(2, 'Carrot', '1');
-        await checkout.validateOrderTable(3, 'Beetroot', '1');
+        await checkout.validateOrderTable(1, 'Cucumber', '1', 48, 48);
+        await checkout.validateOrderTable(2, 'Carrot', '1', 56, 56);
+        await checkout.validateOrderTable(3, 'Beetroot', '1', 32, 32);
         await checkout.validateTotalAmount('136');
         await checkout.clickPlaceOrder();
         await checkout.selectCountry('India');
         await checkout.agreeToTerms();
         await checkout.clickProceed();
         await checkout.validateThankYouMessage();
+    });
+
+    test('User will add multiple quantities of a product to cart and checkout', async () => {
+        await catalog.increaseQuantity('Corn', 3);
+        await catalog.addProductToCart('Corn');
+        await catalog.increaseQuantity('Banana', 2);
+        await catalog.addProductToCart('Banana');
+        await checkout.openCart();
+        await checkout.validateCartItems(['Corn', 'Banana']);
+        await checkout.proceedToCheckout();
+        await checkout.validateOrderTable(1, 'Corn', '4', 75, 300);
+        await checkout.validateOrderTable(2, 'Banana', '3', 45, 135);
+        await checkout.validateTotalAmount('435');
+        await checkout.clickPlaceOrder();
+        await checkout.selectCountry('India');
+        await checkout.agreeToTerms();
+        await checkout.clickProceed();
+        await checkout.validateThankYouMessage();
+
     })
 
 })
